@@ -1,0 +1,5 @@
+exp_id,experiment_title,mission_prog,fuel_category,o2_pct_initial,flow_vel_cm,test_apparatus
+RAW-BASS-001,PMMA Rod Flammability,BASS-II,Solid,21.5,15.0,MSG
+RAW-FLEX-002,Heptane Droplet Test,FLEX,Liquid,30.0,0.0,MDCA
+RAW-SAME-003,Smoke Aerosol Baseline,SAME,Gaseous,15.0,5.5,MSG
+RAW-ERR-004,Missing Flow Data,UNKNOWN,Plasma,99.9,,MSG

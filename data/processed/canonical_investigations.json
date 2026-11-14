@@ -1,0 +1,64 @@
+[
+  {
+    "investigation_id": "RAW-BASS-001",
+    "investigation_name": "PMMA Rod Flammability",
+    "project": "BASS-II",
+    "safety_domain": "Prevention",
+    "fuel_type": "Solid",
+    "oxygen_concentration_pct": 21.5,
+    "flow_velocity_cm_s": 15.0,
+    "hardware": "MSG",
+    "objectives": "Data extracted from empirical logs.",
+    "measurements": [
+      "flame_spread_rate"
+    ],
+    "source_url": null,
+    "data_completeness": []
+  },
+  {
+    "investigation_id": "RAW-FLEX-002",
+    "investigation_name": "Heptane Droplet Test",
+    "project": "FLEX",
+    "safety_domain": "Prevention",
+    "fuel_type": "Liquid",
+    "oxygen_concentration_pct": 30.0,
+    "flow_velocity_cm_s": 0.0,
+    "hardware": "MDCA",
+    "objectives": "Data extracted from empirical logs.",
+    "measurements": [
+      "flame_spread_rate"
+    ],
+    "source_url": null,
+    "data_completeness": []
+  },
+  {
+    "investigation_id": "RAW-SAME-003",
+    "investigation_name": "Smoke Aerosol Baseline",
+    "project": "SAME",
+    "safety_domain": "Prevention",
+    "fuel_type": "Gaseous",
+    "oxygen_concentration_pct": 15.0,
+    "flow_velocity_cm_s": 5.5,
+    "hardware": "MSG",
+    "objectives": "Data extracted from empirical logs.",
+    "measurements": [
+      "flame_spread_rate"
+    ],
+    "source_url": null,
+    "data_completeness": []
+  },
+  {
+    "investigation_id": "RAW-ERR-004",
+    "investigation_name": "Missing Flow Data",
+    "project": "UNKNOWN",
+    "safety_domain": "Prevention",
+    "fuel_type": "Other",
+    "oxygen_concentration_pct": 99.9,
+    "flow_velocity_cm_s": NaN,
+    "hardware": "MSG",
+    "objectives": "Data extracted from empirical logs.",
+    "measurements": [],
+    "source_url": null,
+    "data_completeness": []
+  }
+]

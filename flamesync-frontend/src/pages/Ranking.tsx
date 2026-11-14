@@ -1,19 +1,35 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { useCompare } from '../context/useCompare';
 import type { RankingPayload, RankedItem, RankingResponse } from '../types/index';
 
 export default function Ranking() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [rankedItems, setRankedItems] = useState<RankedItem[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [hasRunRanking, setHasRunRanking] = useState(false);
   const { selectedInvestigations, toggleInvestigation } = useCompare();
 
-  const [missionScenario, setMissionScenario] = useState('Lunar Habitat');
+  const requestedScenario = searchParams.get('scenario');
+  const validScenarios = ['Lunar Habitat', 'Mars Rover', 'ISS Module'];
+  const [missionScenario, setMissionScenario] = useState(
+    requestedScenario && validScenarios.includes(requestedScenario)
+      ? requestedScenario
+      : 'Lunar Habitat',
+  );
   const [constraints, setConstraints] = useState('High Oxygen, Microgravity');
+
+  const handleScenarioChange = (scenario: string) => {
+    setMissionScenario(scenario);
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set('scenario', scenario);
+      return next;
+    }, { replace: true });
+  };
 
   const handleRank = async () => {
     setIsLoading(true);
@@ -66,7 +82,7 @@ export default function Ranking() {
           <label className="text-[9px] text-gray-500 font-bold tracking-widest uppercase">Mission Scenario</label>
           <select
             value={missionScenario}
-            onChange={(e) => setMissionScenario(e.target.value)}
+            onChange={(e) => handleScenarioChange(e.target.value)}
             className="bg-black border border-[#1a1a1a] text-white text-xs p-3 rounded outline-none focus:border-[#FF5500]"
           >
             <option value="Lunar Habitat">Lunar Habitat</option>

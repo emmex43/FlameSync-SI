@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api } from '../services/api';
 import { useCompare } from '../context/useCompare';
 import { MAX_COMPARISON_ITEMS, type Investigation } from '../types/index';
@@ -7,8 +7,9 @@ import { MAX_COMPARISON_ITEMS, type Investigation } from '../types/index';
 export default function Explorer() {
   const [investigations, setInvestigations] = useState<Investigation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search') ?? '';
   const { selectedInvestigations, toggleInvestigation } = useCompare();
 
   useEffect(() => {
@@ -47,6 +48,18 @@ export default function Explorer() {
     inv.fuel_type.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleSearchChange = (value: string) => {
+    setSearchParams((current) => {
+      const next = new URLSearchParams(current);
+      if (value.trim()) {
+        next.set('search', value);
+      } else {
+        next.delete('search');
+      }
+      return next;
+    }, { replace: true });
+  };
+
   return (
     <div className="flex flex-col h-full max-w-7xl mx-auto font-mono selection:bg-[#FF5500] selection:text-white gap-6">
 
@@ -79,7 +92,7 @@ export default function Explorer() {
             type="text"
             placeholder="Search by name, project, or keyword..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="w-full bg-[#050505] border border-[#1a1a1a] rounded-lg py-3 px-10 text-[11px] text-white outline-none focus:border-[#FF5500] transition-colors"
           />
           <svg className="w-4 h-4 text-gray-500 absolute left-4 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
