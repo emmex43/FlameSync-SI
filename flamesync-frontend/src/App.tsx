@@ -26,9 +26,9 @@ function App() {
   return (
     <CompareProvider>
       <BrowserRouter>
-        <div className="flex h-screen w-screen bg-[#000000] overflow-hidden text-white font-sans">
+        <div className="flex h-screen w-screen overflow-hidden bg-[#000000] text-white font-sans">
           <Sidebar />
-          <main className="flex-1 overflow-y-auto p-4 md:p-8">
+          <main className="min-w-0 flex-1 overflow-y-auto p-4 pb-24 sm:p-6 sm:pb-24 lg:p-8">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/explorer" element={<Explorer />} />
