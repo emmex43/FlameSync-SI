@@ -10,8 +10,8 @@ FlameSync is an experimental combustion-research dashboard for exploring NASA in
 - **Compare** lets users select up to four Explorer or Ranking records and compare their normalized fields and original columns. Missing values appear as `N/A`.
 - **Ranking** sorts local records by keyword overlap with the mission scenario and constraints. The returned percentage is a term-match score, not a learned relevance probability or AI assessment.
 - **Predict** estimates CFI-G experimental burn time from fuel type, oxygen fraction, chamber pressure, and mass flow. It displays the model's global feature importances and grouped validation measurements.
-- **Assistant** retrieves excerpts from a local Chroma vector database built from PDFs in `data/docs` and the configured NASA web pages, then sends the excerpts and question to an OpenRouter chat model. Retrieved files and URLs are shown as sources.
-- **Home** links supported mission cards to Ranking and research-area cards to Explorer filters. For example, Detection searches `SAME` and Suppression searches `Flex2`.
+- **Assistant** retrieves excerpts from a local Chroma vector database built from PDFs placed in the local `data/docs` directory and the configured NASA web pages, then sends the excerpts and question to an OpenRouter chat model. Retrieved files and URLs are shown as sources.
+- **Home** links mission cards to Ranking with the selected scenario prefilled, research-area cards to filtered Explorer results, and summary cards to Explorer. Research filters search for `flame` (Flammability), `sensor` (Detection), and `extinguish` (Suppression).
 
 The app uses local datasets and an indexed document store; it does not fetch the raw investigation data from a live NASA API.
 
@@ -27,7 +27,7 @@ FlameSync/
 │   ├── flamesync_rf_model.pkl   # CFI-G burn-time Random Forest
 │   └── requirements.txt
 ├── data/
-│   ├── docs/                    # Research PDFs for RAG
+│   ├── docs/                    # Local-only research PDFs for RAG (not included in the repository)
 │   ├── raw_datasets/            # Local NASA PSI CSVs and DAFT XLS
 │   └── vector_db/               # Persisted Chroma index for the Assistant
 ├── flamesync-frontend/
@@ -122,7 +122,7 @@ The parser preserves each source row in `raw_data`; normalized values such as ox
 
 ### PDF and web RAG index
 
-Put PDF documents in `data/docs`. The ingestion script also loads the NASA web pages listed in `scripts/ingest_documents.py`. From the project root, build/update the local Chroma store with:
+The `data/docs` directory and its PDFs are not included in the repository. Create `data/docs` locally and add any research PDFs you want indexed. The ingestion script also loads the NASA web pages listed in `scripts/ingest_documents.py`. From the project root, build/update the local Chroma store with:
 
 ```powershell
 python scripts\ingest_documents.py
