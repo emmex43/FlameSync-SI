@@ -1,5 +1,6 @@
 import hashlib
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -24,6 +25,7 @@ class Investigation(BaseModel):
     source_file: str
     source_row: int
     raw_data: Dict[str, str]
+    source_updated_at: Optional[datetime] = None
 
 
 def _read_dataset(path: Path) -> pd.DataFrame:
@@ -67,7 +69,7 @@ def _project_name(path: Path) -> str:
     return name.replace("_", " ").strip()
 
 
-def _read_xls_records(path: Path) -> List[Investigation]:
+def _read_xls_records(path: Path, source_updated_at: datetime) -> List[Investigation]:
     workbook = pd.ExcelFile(path, engine="xlrd")
     investigations: List[Investigation] = []
     project = path.stem.split()[0]
@@ -128,6 +130,7 @@ def _read_xls_records(path: Path) -> List[Investigation]:
                     source_file=path.name,
                     source_row=index + 1,
                     raw_data=raw_data,
+                    source_updated_at=source_updated_at,
                 )
             )
 
@@ -159,9 +162,10 @@ def load_canonical_data() -> List[Investigation]:
         if digest in seen_files:
             continue
         seen_files.add(digest)
+        source_updated_at = datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
 
         if path.suffix.lower() == ".xls":
-            investigations.extend(_read_xls_records(path))
+            investigations.extend(_read_xls_records(path, source_updated_at))
             continue
 
         dataset = _read_dataset(path)
@@ -218,6 +222,7 @@ def load_canonical_data() -> List[Investigation]:
                     source_file=path.name,
                     source_row=row_number,
                     raw_data=raw_data,
+                    source_updated_at=source_updated_at,
                 )
             )
 
